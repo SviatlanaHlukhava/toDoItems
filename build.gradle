@@ -1,0 +1,61 @@
+plugins {
+    id 'org.springframework.boot' version '3.1.0'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id 'java'
+    id 'jacoco'
+    id 'pmd'
+    id 'checkstyle'
+}
+
+group = 'com.example'
+version = '1.0.0'
+sourceCompatibility = '17'  // Set your Java version
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Spring Boot Starter Web
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Spring Boot Starter Data JPA
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // MySQL Connector
+    implementation 'com.mysql:mysql-connector-j:9.0.0'
+
+    // Hibernate
+    implementation 'org.hibernate:hibernate-core:6.2.4.Final'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mockito:mockito-core:4.8.0'
+}
+
+checkstyle {
+    toolVersion = '10.8.0'
+    configFile = file('config/checkstyle/checkstyle.xml')
+}
+
+pmd {
+    toolVersion = '6.52.0'
+    ignoreFailures = false
+    ruleSets = []
+    ruleSetFiles = files('config/pmd/ruleset.xml')
+}
+
+jacoco {
+    toolVersion = "0.8.8"  // Jacoco version
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport  // Generate the report after tests
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
